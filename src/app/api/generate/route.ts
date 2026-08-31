@@ -143,10 +143,10 @@ export async function POST(request: NextRequest) {
         formData.append('size', sizeString);
         // 第一张参考图作为 image 参数
         const firstImage = validRefImages[0];
-        formData.append('image', new Blob([firstImage.buffer], { type: firstImage.mimeType }), 'reference.png');
+        formData.append('image', new Blob([new Uint8Array(firstImage.buffer)], { type: firstImage.mimeType }), 'reference.png');
         // 多张参考图作为额外 image 参数
         for (let i = 1; i < validRefImages.length; i++) {
-          formData.append('image', new Blob([validRefImages[i].buffer], { type: validRefImages[i].mimeType }), `reference${i}.png`);
+          formData.append('image', new Blob([new Uint8Array(validRefImages[i].buffer)], { type: validRefImages[i].mimeType }), `reference${i}.png`);
         }
         return fetch(`${IMAGE_API_BASE}${endpoint}`, {
           method: 'POST',
